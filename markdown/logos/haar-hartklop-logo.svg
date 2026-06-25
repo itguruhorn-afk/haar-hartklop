@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 280" role="img" aria-labelledby="title desc">
+  <title id="title">Haar Hartklop logo</title>
+  <desc id="desc">A warm script HH monogram with Haar Hartklop wordmark.</desc>
+  <defs>
+    <linearGradient id="wine" x1="0" x2="1">
+      <stop offset="0" stop-color="#8f1717"/>
+      <stop offset="1" stop-color="#58223b"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="280" fill="#fff8f4"/>
+  <path d="M136 209c34-58 62-114 83-171 7-19 37-12 31 9-11 39-21 78-31 117 51-54 88-94 111-119 16-17 43 3 30 23-33 51-58 101-75 151 29-30 60-59 92-87 17-15 41 8 25 25-41 43-76 86-105 130-10 16-36 9-34-10 3-28 12-65 26-110-30 29-58 60-84 93-12 15-37 4-33-15 6-31 13-63 21-95-11 24-24 49-39 75-11 19-31 3-18-16Z" fill="url(#wine)" transform="translate(40 -14)"/>
+  <path d="M434 91c0-19 15-34 34-34h268c19 0 34 15 34 34v92c0 19-15 34-34 34H468c-19 0-34-15-34-34V91Z" fill="#fff" opacity=".86"/>
+  <text x="470" y="130" font-family="Georgia, 'Times New Roman', serif" font-size="45" letter-spacing="3" fill="#53192d">HAAR</text>
+  <text x="470" y="178" font-family="Montserrat, Arial, sans-serif" font-size="42" font-weight="700" letter-spacing="5" fill="#8f1717">HARTKLOP</text>
+  <path d="M758 131c15-25 54-12 46 21-7 31-48 46-73 66 8-33 12-67 27-87Z" fill="#d7a893" opacity=".55"/>
+</svg>

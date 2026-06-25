@@ -1,0 +1,200 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("ADMIN")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SiteSettings {
+  id           String   @id @default(uuid())
+  brandName    String   @default("Haar Hartklop")
+  tagline      String   @default("Bybelstudies, susterskap, bemoediging en meer.")
+  logoUrl      String?
+  primaryColor String   @default("#8F1717")
+  accentColor  String   @default("#58223B")
+  headingFont  String   @default("Playfair Display")
+  bodyFont     String   @default("Montserrat")
+  facebookUrl  String?
+  instagramUrl String?
+  youtubeUrl   String?
+  donationUrl  String?
+  contactEmail String?
+  updatedAt    DateTime @updatedAt
+}
+
+model HeroSlide {
+  id                   String   @id @default(uuid())
+  title                String
+  subtitle             String?
+  imageUrl             String
+  primaryButtonLabel   String?
+  primaryButtonUrl     String?
+  secondaryButtonLabel String?
+  secondaryButtonUrl   String?
+  sortOrder            Int      @default(0)
+  isActive             Boolean  @default(true)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}
+
+model FounderLetter {
+  id              String   @id @default(uuid())
+  title           String   @default("'n Woord van die stigter")
+  body            String
+  imageUrl        String?
+  backgroundColor String   @default("#FFF8F4")
+  sortOrder       Int      @default(0)
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Testimonial {
+  id            String   @id @default(uuid())
+  quote         String
+  authorName    String
+  authorContext String?
+  imageUrl      String?
+  sourceType    String   @default("BIBLE_STUDY")
+  sortOrder     Int      @default(0)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model BibleStudy {
+  id                       String   @id @default(uuid())
+  title                    String
+  slug                     String   @unique
+  description              String
+  coverImageUrl            String?
+  price                    Float    @default(0)
+  capacity                 Int?
+  registrationStatus       String   @default("DRAFT")
+  format                   String   @default("DIGITAL")
+  zoomUrlPrivate           String?
+  digitalDownloadPrivateUrl String?
+  hardcopyAvailable        Boolean  @default(false)
+  courierNotes             String?
+  startsAt                 DateTime?
+  isActive                 Boolean  @default(true)
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+
+  registrations BibleStudyRegistration[]
+}
+
+model BibleStudyRegistration {
+  id              String   @id @default(uuid())
+  bibleStudyId    String
+  firstName       String
+  lastName        String
+  email           String
+  phone           String?
+  city            String?
+  province        String?
+  preferredFormat String?
+  paymentStatus   String   @default("PENDING")
+  notes           String?
+  consent         Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  bibleStudy BibleStudy @relation(fields: [bibleStudyId], references: [id])
+}
+
+model Event {
+  id              String   @id @default(uuid())
+  title           String
+  slug            String   @unique
+  type            String   @default("MEET_GREET")
+  description     String
+  startsAt        DateTime?
+  endsAt          DateTime?
+  location        String?
+  heroImageUrl    String?
+  videoEmbedUrl   String?
+  registrationUrl String?
+  capacity        Int?
+  status          String   @default("DRAFT")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  images EventImage[]
+}
+
+model EventImage {
+  id        String @id @default(uuid())
+  eventId   String
+  imageUrl  String
+  altText   String?
+  sortOrder Int    @default(0)
+
+  event Event @relation(fields: [eventId], references: [id])
+}
+
+model Product {
+  id                 String   @id @default(uuid())
+  title              String
+  slug               String   @unique
+  category           String   @default("BYBELSTUDIE")
+  description        String
+  price              Float    @default(0)
+  salePrice          Float?
+  mainImageUrl       String?
+  images             String[]
+  status             String   @default("DRAFT")
+  inventoryCount     Int?
+  externalCheckoutUrl String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model NewsletterSubscriber {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  interest  String?
+  consent   Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model SalvationSubmission {
+  id                   String   @id @default(uuid())
+  firstName            String
+  lastName             String
+  email                String
+  phone                String?
+  city                 String?
+  province             String?
+  message              String?
+  preferredContactMethod String?
+  newsletterOptIn      Boolean  @default(false)
+  status               String   @default("NEW")
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}
+
+model ContactSubmission {
+  id          String   @id @default(uuid())
+  name        String
+  email       String
+  subject     String
+  message     String
+  enquiryType String?
+  status      String   @default("NEW")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply font-body text-brand-ink bg-brand-blush;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-full font-semibold
+           bg-brand-red text-white hover:bg-brand-wine transition-colors duration-200
+           focus:outline-none focus:ring-2 focus:ring-brand-red focus:ring-offset-2;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-full font-semibold
+           border-2 border-brand-red text-brand-red hover:bg-brand-red hover:text-white
+           transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-brand-red focus:ring-offset-2;
+  }
+  .btn-outline-light {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-full font-semibold
+           border-2 border-white text-white hover:bg-white hover:text-brand-ink
+           transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2;
+  }
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  .section-padding {
+    @apply py-16 md:py-24;
+  }
+  .card {
+    @apply bg-white rounded-2xl shadow-sm border border-brand-cream overflow-hidden
+           hover:shadow-md transition-shadow duration-200;
+  }
+}
