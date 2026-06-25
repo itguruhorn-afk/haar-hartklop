@@ -1,17 +1,17 @@
-version: "3.8"
 services:
-  postgres:
-    image: postgres:16-alpine
+  mariadb:
+    image: mariadb:11
     container_name: haarhartklop-db
     restart: unless-stopped
     environment:
-      POSTGRES_USER: haarhartklop
-      POSTGRES_PASSWORD: haarhartklop
-      POSTGRES_DB: haarhartklop
+      MARIADB_ROOT_PASSWORD: haarhartklop
+      MARIADB_DATABASE: haarhartklop
+      MARIADB_USER: haarhartklop
+      MARIADB_PASSWORD: haarhartklop
     ports:
-      - "5432:5432"
+      - "3306:3306"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - mariadbdata:/var/lib/mysql
 
 volumes:
-  pgdata:
+  mariadbdata:

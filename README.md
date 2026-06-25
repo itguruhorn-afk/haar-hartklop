@@ -18,7 +18,7 @@
 
 - **Frontend**: Next.js 14, React 18, TypeScript, Tailwind CSS
 - **Backend**: Next.js API Routes, Prisma ORM
-- **Databasis**: PostgreSQL (via Docker)
+- **Databasis**: MariaDB / MySQL (via Docker)
 - **Authentikasie**: JWT via `jose`, bcryptjs wagwoord hashing
 - **Validering**: Zod
 
@@ -41,7 +41,7 @@ npm install
 docker compose up -d
 ```
 
-Die PostgreSQL databasis sal beskikbaar wees op `localhost:5432`.
+Die MariaDB databasis sal beskikbaar wees op `localhost:3306`.
 
 ### 3. Stel Prisma Op
 
@@ -125,7 +125,7 @@ haarhartklop/
 Kopieer `.env.example` na `.env` en stel:
 
 ```env
-DATABASE_URL="postgresql://haarhartklop:haarhartklop@localhost:5432/haarhartklop"
+DATABASE_URL="mysql://haarhartklop:haarhartklop@localhost:3306/haarhartklop"
 JWT_SECRET="jou-unieke-geheim"
 NEXT_PUBLIC_SITE_URL="http://localhost:3000"
 ```
@@ -138,7 +138,7 @@ npm start
 ```
 
 Vir produksie-ontplooiing:
-1. Stel 'n PostgreSQL databasis op (Supabase, Neon, Railway, ens.)
+1. Stel 'n MariaDB/MySQL databasis op (Supabase, PlanetScale, ens.)
 2. Dateer `DATABASE_URL` op
 3. Stel 'n sterker `JWT_SECRET`
 4. Ontplooi na Vercel / Netlify

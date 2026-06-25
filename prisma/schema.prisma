@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -52,7 +52,7 @@ model HeroSlide {
 model FounderLetter {
   id              String   @id @default(uuid())
   title           String   @default("'n Woord van die stigter")
-  body            String
+  body            String   @db.Text
   imageUrl        String?
   backgroundColor String   @default("#FFF8F4")
   sortOrder       Int      @default(0)
@@ -63,7 +63,7 @@ model FounderLetter {
 
 model Testimonial {
   id            String   @id @default(uuid())
-  quote         String
+  quote         String   @db.Text
   authorName    String
   authorContext String?
   imageUrl      String?
@@ -78,7 +78,7 @@ model BibleStudy {
   id                       String   @id @default(uuid())
   title                    String
   slug                     String   @unique
-  description              String
+  description              String   @db.Text
   coverImageUrl            String?
   price                    Float    @default(0)
   capacity                 Int?
@@ -87,7 +87,7 @@ model BibleStudy {
   zoomUrlPrivate           String?
   digitalDownloadPrivateUrl String?
   hardcopyAvailable        Boolean  @default(false)
-  courierNotes             String?
+  courierNotes             String?  @db.Text
   startsAt                 DateTime?
   isActive                 Boolean  @default(true)
   createdAt                DateTime @default(now())
@@ -107,7 +107,7 @@ model BibleStudyRegistration {
   province        String?
   preferredFormat String?
   paymentStatus   String   @default("PENDING")
-  notes           String?
+  notes           String?  @db.Text
   consent         Boolean  @default(false)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -120,7 +120,7 @@ model Event {
   title           String
   slug            String   @unique
   type            String   @default("MEET_GREET")
-  description     String
+  description     String   @db.Text
   startsAt        DateTime?
   endsAt          DateTime?
   location        String?
@@ -150,11 +150,11 @@ model Product {
   title              String
   slug               String   @unique
   category           String   @default("BYBELSTUDIE")
-  description        String
+  description        String   @db.Text
   price              Float    @default(0)
   salePrice          Float?
   mainImageUrl       String?
-  images             String[]
+  images             Json     @default("[]")
   status             String   @default("DRAFT")
   inventoryCount     Int?
   externalCheckoutUrl String?
@@ -179,7 +179,7 @@ model SalvationSubmission {
   phone                String?
   city                 String?
   province             String?
-  message              String?
+  message              String?  @db.Text
   preferredContactMethod String?
   newsletterOptIn      Boolean  @default(false)
   status               String   @default("NEW")
@@ -192,7 +192,7 @@ model ContactSubmission {
   name        String
   email       String
   subject     String
-  message     String
+  message     String   @db.Text
   enquiryType String?
   status      String   @default("NEW")
   createdAt   DateTime @default(now())
