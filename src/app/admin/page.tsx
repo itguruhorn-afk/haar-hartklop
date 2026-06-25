@@ -4,24 +4,42 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 
 interface DashboardData {
-  heroSlides: { length: number };
-  bibleStudies: { length: number };
-  events: { length: number };
-  products: { length: number };
-  newsletterSubscribers: { length: number };
-  bibleStudyRegistrations: { length: number };
-  salvationSubmissions: { length: number };
-  contactSubmissions: { length: number };
+  heroSlides: unknown[];
+  bibleStudies: unknown[];
+  events: unknown[];
+  products: unknown[];
+  newsletterSubscribers: unknown[];
+  bibleStudyRegistrations: unknown[];
+  salvationSubmissions: unknown[];
+  contactSubmissions: unknown[];
+}
+
+function isDataValid(data: unknown): data is DashboardData {
+  if (!data || typeof data !== "object") return false;
+  const d = data as Record<string, unknown>;
+  return Array.isArray(d.heroSlides) && Array.isArray(d.bibleStudies) &&
+    Array.isArray(d.events) && Array.isArray(d.products);
 }
 
 export default function AdminDashboard() {
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     fetch("/api/admin/data")
       .then((res) => res.json())
-      .then(setData)
+      .then((json) => {
+        if (json.error) {
+          setError(json.error);
+          setData(null);
+        } else if (isDataValid(json)) {
+          setData(json);
+        } else {
+          setError("Ongeldige data ontvang");
+        }
+      })
+      .catch((err) => setError(err.message || "Kon nie data laai nie"))
       .finally(() => setLoading(false));
   }, []);
 
@@ -29,6 +47,20 @@ export default function AdminDashboard() {
     return (
       <div className="text-center py-20">
         <p className="text-brand-muted">Laai data...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-20">
+        <div className="bg-red-50 text-red-700 p-6 rounded-2xl inline-block">
+          <p className="font-semibold mb-2">Fout</p>
+          <p>{error}</p>
+          <button onClick={() => window.location.reload()} className="btn-primary mt-4">
+            Probeer Weer
+          </button>
+        </div>
       </div>
     );
   }

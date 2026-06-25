@@ -22,39 +22,62 @@ const sidebarLinks = [
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [authError, setAuthError] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
 
-  // Don't apply admin layout to login page
-  if (pathname === "/admin/login") {
-    return <>{children}</>;
-  }
+  const isLoginPage = pathname === "/admin/login";
 
   useEffect(() => {
+    if (isLoginPage) return;
+    let cancelled = false;
     fetch("/api/admin/me")
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error("Auth failed");
+        return res.json();
+      })
       .then((data) => {
+        if (cancelled) return;
         if (!data.authenticated) {
           router.push("/admin/login");
         } else {
           setSession(data);
         }
       })
-      .catch(() => router.push("/admin/login"));
-  }, [router]);
+      .catch(() => {
+        if (!cancelled) {
+          setAuthError(true);
+        }
+      });
+    return () => { cancelled = true; };
+  }, [router, isLoginPage]);
 
-  async function handleLogout() {
-    await fetch("/api/admin/logout", { method: "POST" });
-    router.push("/admin/login");
-    router.refresh();
+  // Don't apply admin layout to login page
+  if (isLoginPage) {
+    return <>{children}</>;
   }
 
   if (!session) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-brand-blush">
-        <p className="text-brand-muted">Laai...</p>
+        {authError ? (
+          <div className="text-center">
+            <p className="text-red-600 font-semibold mb-4">Kon nie verifieer nie</p>
+            <button onClick={() => { setAuthError(false); router.push("/admin/login"); }} className="btn-primary">
+              Gaan na Aanmelding
+            </button>
+          </div>
+        ) : (
+          <p className="text-brand-muted">Laai...</p>
+        )}
       </div>
     );
+  }
+
+  async function handleLogout() {
+    await fetch("/api/admin/logout", { method: "POST" });
+    router.push("/admin/login");
+    router.refresh();
   }
 
   return (
